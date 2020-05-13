@@ -1,5 +1,5 @@
 (function($) {
-  var lock_url = window.location.pathname + 'locking/',
+  var lock_url = window.location.pathname + '../locking/',
       csrftoken = getCookie('csrftoken'), timer;
 
   $(function() {
