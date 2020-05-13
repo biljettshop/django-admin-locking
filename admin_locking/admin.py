@@ -3,7 +3,7 @@ from django.core.cache import cache
 from django.conf.urls import url
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, gettext_lazy
 
 
 class AdminLockingMixin(object):
