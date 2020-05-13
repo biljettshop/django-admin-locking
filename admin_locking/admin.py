@@ -7,6 +7,19 @@ from django.utils.translation import ugettext as _
 
 
 class AdminLockingMixin(object):
+    def get_admin_locking_username(self, obj):
+        cache_key = 'admin-locking-%s-%s-%s' % (self.model._meta.app_label, self.model._meta.model_name, obj.pk)
+        user_id = cache.get(cache_key)
+        if user_id:
+            return get_user_model().objects.get(pk=int(user_id)).username
+        return ''
+    get_admin_locking_username.short_description = gettext_lazy('Locked by')
+    
+    def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
+        if obj:
+            context['admin_locking_username'] = self.get_admin_locking_username(obj)
+        return super().render_change_form(request, context, add=add, change=change, form_url=form_url, obj=obj)
+
     def locking(self, request, object_id):
         lock_url = request.POST.get('url')
         if not lock_url or not request.user.is_authenticated:
